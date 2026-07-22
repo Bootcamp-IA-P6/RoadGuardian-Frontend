@@ -5,3 +5,83 @@
 body {
   @apply font-body bg-asphalt-900 text-concrete-50;
 }
+
+/* Textura de grano sutil para el hero, generada con un filtro SVG (feTurbulence) */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Carretera en perspectiva del hero: un trapecio de asfalto con línea central discontinua */
+.road {
+  position: relative;
+  height: clamp(160px, 26vw, 260px);
+}
+.road-surface {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, #1f2226, #14171a 70%);
+  clip-path: polygon(28% 100%, 72% 100%, 53% 0%, 47% 0%);
+  border-top: 2px solid #2a2e33;
+}
+.road-centerline {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 8%;
+  height: 100%;
+  clip-path: polygon(20% 100%, 80% 100%, 50% 0%, 50% 0%);
+  background: repeating-linear-gradient(
+    to top,
+    #f5a623 0,
+    #f5a623 5%,
+    transparent 5%,
+    transparent 10%
+  );
+  -webkit-mask-image: linear-gradient(to top, black 0%, black 55%, transparent 96%);
+  mask-image: linear-gradient(to top, black 0%, black 55%, transparent 96%);
+  opacity: 0.9;
+}
+.road-horizon {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 40px;
+  background: radial-gradient(ellipse at center, rgba(245, 166, 35, 0.1), transparent 75%);
+}
+/* Barrido animado que simula el escaneo de IA sobre la carretera */
+.road-scan {
+  position: absolute;
+  left: 26%;
+  right: 26%;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #f5a623, transparent);
+  opacity: 0.75;
+  animation: road-sweep 4.5s ease-in-out infinite;
+}
+@keyframes road-sweep {
+  0% { top: 6%; opacity: 0; }
+  12% { opacity: 0.75; }
+  50% { top: 92%; opacity: 0.35; }
+  88% { opacity: 0.75; }
+  100% { top: 6%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .road-scan {
+    animation: none;
+    top: 50%;
+    opacity: 0.4;
+  }
+}
