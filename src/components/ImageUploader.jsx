@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import CameraCapture from "./CameraCapture";
 
 export default function ImageUploader({ onFileSelected, isLoading }) {
   const inputRef = useRef(null);
-  const cameraRef = useRef(null);
+  const [showCamera, setShowCamera] = useState(false);
 
   return (
     <div
@@ -28,15 +29,12 @@ export default function ImageUploader({ onFileSelected, isLoading }) {
         onChange={(e) => e.target.files?.[0] && onFileSelected(e.target.files[0])}
       />
 
-      {/* Input dedicado a la cámara: abre directamente la cámara trasera en móvil */}
-      <input
-        ref={cameraRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        className="hidden"
-        onChange={(e) => e.target.files?.[0] && onFileSelected(e.target.files[0])}
-      />
+      {showCamera && (
+        <CameraCapture
+          onCapture={onFileSelected}
+          onClose={() => setShowCamera(false)}
+        />
+      )}
 
       {isLoading ? (
         <p className="font-mono text-amber-500 text-sm tracking-wider animate-pulse">
@@ -73,7 +71,7 @@ export default function ImageUploader({ onFileSelected, isLoading }) {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              cameraRef.current?.click();
+              setShowCamera(true);
             }}
             className="inline-flex items-center gap-2 mt-4 font-mono text-xs tracking-wider text-amber-500 border border-amber-500/60 px-4 py-2 hover:bg-amber-500 hover:text-asphalt-800 transition-colors"
           >
