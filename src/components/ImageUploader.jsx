@@ -2,6 +2,7 @@ import { useRef } from "react";
 
 export default function ImageUploader({ onFileSelected, isLoading }) {
   const inputRef = useRef(null);
+  const cameraRef = useRef(null);
 
   return (
     <div
@@ -23,6 +24,16 @@ export default function ImageUploader({ onFileSelected, isLoading }) {
         ref={inputRef}
         type="file"
         accept="image/*"
+        className="hidden"
+        onChange={(e) => e.target.files?.[0] && onFileSelected(e.target.files[0])}
+      />
+
+      {/* Input dedicado a la cámara: abre directamente la cámara trasera en móvil */}
+      <input
+        ref={cameraRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
         className="hidden"
         onChange={(e) => e.target.files?.[0] && onFileSelected(e.target.files[0])}
       />
@@ -56,6 +67,27 @@ export default function ImageUploader({ onFileSelected, isLoading }) {
           <p className="font-mono text-gray-500 text-xs mt-2 tracking-wider">
             o haz clic para seleccionar un archivo
           </p>
+
+          {/* Botón dedicado: dispara el input con capture para abrir la cámara */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              cameraRef.current?.click();
+            }}
+            className="inline-flex items-center gap-2 mt-4 font-mono text-xs tracking-wider text-amber-500 border border-amber-500/60 px-4 py-2 hover:bg-amber-500 hover:text-asphalt-800 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4">
+              <path
+                d="M4 8h3l1.5-2h7L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinejoin="round"
+              />
+              <circle cx="12" cy="13" r="3.2" stroke="currentColor" strokeWidth="1.8" />
+            </svg>
+            Tomar foto
+          </button>
 
           <div className="flex justify-center gap-4 mt-4 flex-wrap">
             <span className="font-mono text-[11px] tracking-wider text-gray-500">
