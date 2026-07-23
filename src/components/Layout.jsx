@@ -1,3 +1,15 @@
+import { NavLink } from "react-router-dom";
+
+// Clases de las pestañas de navegación según estén activas o no
+function tabClass({ isActive }) {
+  return [
+    "font-mono text-xs uppercase tracking-wider px-3.5 py-1.5 border transition",
+    isActive
+      ? "border-amber-500 text-amber-500 bg-amber-500/10"
+      : "border-gray-800 text-gray-400 hover:text-gray-200",
+  ].join(" ");
+}
+
 export default function Layout({ children }) {
   return (
     <div className="min-h-screen bg-asphalt-900">
@@ -28,6 +40,17 @@ export default function Layout({ children }) {
           Backend conectado
         </div>
       </header>
+
+      {/* Navegación entre las dos páginas: analizar en pantalla o generar el PDF directamente */}
+      <nav className="flex gap-2 px-6 pt-5">
+        <NavLink to="/" end className={tabClass}>
+          Analizar
+        </NavLink>
+        <NavLink to="/informe-pdf" className={tabClass}>
+          Generar PDF
+        </NavLink>
+      </nav>
+
       <main>{children}</main>
     </div>
   );
