@@ -6,18 +6,18 @@ import ImageUploader from "../components/ImageUploader";
 import DetectionCanvas from "../components/DetectionCanvas";
 import ResultsTable from "../components/ResultsTable";
 import PriorityBadge from "../components/PriorityBadge";
-import { analyzeImage, downloadReportPdf } from "../services/api";
+import { analyzeImage } from "../services/api";
 
-export default function Home() {
-  const [file, setFile] = useState(null);
+// Página que solo analiza la imagen (llama a /analyze una única vez) y
+// muestra el resultado en pantalla. La generación de PDF vive en su propia
+// página (InformePdfPage) para no tener que repetir el análisis dos veces.
+export default function AnalizarPage() {
   const [imageUrl, setImageUrl] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   async function handleFileSelected(selectedFile) {
-    setFile(selectedFile);
     setLoading(true);
     setError(null);
     setResult(null);
@@ -33,30 +33,13 @@ export default function Home() {
     }
   }
 
-  async function handleDownloadPdf() {
-    if (!file) return;
-    setDownloadingPdf(true);
-    setError(null);
-    try {
-      const blob = await downloadReportPdf(file);
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "informe_roadguardian.pdf";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setDownloadingPdf(false);
-    }
-  }
-
   return (
     <Layout>
-      <Hero />
+      <Hero>
+        Sube una foto de la carretera.
+        <br />
+        Recibe el diagnóstico <span className="text-amber-500">al instante</span>.
+      </Hero>
 
       {/* La tarjeta de subida se solapa un poco con el hero, como en la maqueta aprobada */}
       <div className="relative -mt-8 sm:-mt-6 max-w-[40rem] mx-auto px-6 pb-2">
@@ -106,13 +89,6 @@ export default function Home() {
                 <p className="text-gray-300 text-sm whitespace-pre-line">{result.informe}</p>
               </div>
             )}
-            <button
-              onClick={handleDownloadPdf}
-              disabled={downloadingPdf}
-              className="w-full bg-amber-500 hover:bg-amber-600 disabled:bg-gray-600 text-asphalt-900 font-display uppercase tracking-wide py-3 transition"
-            >
-              {downloadingPdf ? "Generando PDF..." : "📄 Descargar informe en PDF"}
-            </button>
           </div>
         )}
       </div>
