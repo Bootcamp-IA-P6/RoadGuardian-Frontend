@@ -6,6 +6,7 @@ import ImageUploader from "../components/ImageUploader";
 import DetectionCanvas from "../components/DetectionCanvas";
 import ResultsTable from "../components/ResultsTable";
 import PriorityBadge from "../components/PriorityBadge";
+import InformeTecnico from "../components/InformeTecnico";
 import { analyzeImage } from "../services/api";
 
 // Página que solo analiza la imagen (llama a /analyze una única vez) y
@@ -83,10 +84,10 @@ export default function AnalizarPage() {
             </div>
             {result.informe && (
               <div className="bg-asphalt-700 border-t-2 border-amber-500 p-5">
-                <h2 className="font-display uppercase tracking-wide text-concrete-50 mb-2">
+                <h2 className="font-display uppercase tracking-wide text-concrete-50 mb-3">
                   Informe técnico
                 </h2>
-                <p className="text-gray-300 text-sm whitespace-pre-line">{result.informe}</p>
+                <InformeTecnico texto={result.informe} />
               </div>
             )}
           </div>
