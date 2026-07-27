@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        asphalt: { 900: "#14171A", 700: "#2A2E33" },
+        asphalt: { 900: "#14171A", 800: "#1F2226", 700: "#2A2E33" },
         concrete: { 50: "#F1F2F4" },
         amber: { 500: "#F5A623", 600: "#DB8E12" },
       },
