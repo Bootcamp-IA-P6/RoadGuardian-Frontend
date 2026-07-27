@@ -37,9 +37,9 @@ Este repositorio contiene **solo el frontend**: la interfaz en React que sube la
 
 ```mermaid
 flowchart LR
-    U["Usuario"] -->|"sube foto o usa la cámara"| FE["Frontend (este repo)\nReact + Vite"]
-    FE -->|"POST /analyze\nPOST /analyze/pdf"| BE["Backend\nFastAPI"]
-    BE --> YOLO["Modelo YOLO\ndetección de daños"]
+    U["Usuario"] -->|"sube foto o usa la cámara"| FE["Frontend (este repo)\nReact + Vite · Vercel"]
+    FE -->|"POST /analyze\nPOST /analyze/pdf"| BE["Backend orquestador\nFastAPI · Render"]
+    BE --> YOLO["Microservicio YOLO\nHugging Face Spaces"]
     BE --> LLM["LLM\nveredicto + informe"]
     BE --> SB[("Supabase\nStorage + Postgres")]
     BE -->|"JSON detecciones\no PDF"| FE
@@ -194,7 +194,13 @@ Scripts disponibles:
 
 Si no se define, `src/services/api.js` usa como valor por defecto el backend ya desplegado en Render.
 
-## Despliegue
+## 🌐 Despliegue
+
+| Servicio | Plataforma | Enlace |
+|---|---|---|
+| 🖥️ Frontend | Vercel | [road-guardian-frontend.vercel.app](https://road-guardian-frontend.vercel.app) |
+| 🧠 Backend — Orquestador | Render | [roadguardian-backend-wahv.onrender.com](https://roadguardian-backend-wahv.onrender.com) |
+| 🎯 Microservicio YOLO | Hugging Face Spaces | [huggingface.co/spaces/Gemita284/roadguardian-api](https://huggingface.co/spaces/Gemita284/roadguardian-api) |
 
 El frontend se despliega en **Vercel**. Al ser una SPA con rutas de cliente (`/`, `/informe-pdf`), [`vercel.json`](vercel.json) redirige cualquier ruta a `index.html` para que React Router pueda resolverla:
 
