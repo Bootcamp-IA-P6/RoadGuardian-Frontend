@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(chromium-cli --session roadguardian)",
+      "Bash(npx --version)",
+      "Bash(npm ls *)"
+    ]
+  }
+}
